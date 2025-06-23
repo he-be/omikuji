@@ -52,9 +52,11 @@ npm run dev:worker
 # ビルド
 npm run build:worker
 
-# デプロイ
+# デプロイ（API トークンが必要）
 npm run deploy
 ```
+
+**注意**: Wrangler v3 以降では `wrangler publish` が `wrangler deploy` に変更されました。
 
 ## プロジェクト構造
 

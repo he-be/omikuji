@@ -9,7 +9,7 @@
     "start": "node dist/index.js",
     "dev": "ts-node src/index.ts",
     "dev:worker": "wrangler dev src/worker.ts",
-    "deploy": "wrangler publish",
+    "deploy": "wrangler deploy",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
