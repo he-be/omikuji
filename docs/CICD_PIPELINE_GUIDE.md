@@ -134,6 +134,8 @@ if (require.main === module) {
 
 ### 基本的な GitHub Actions ワークフロー
 
+**注意**: テンプレートファイルは `templates/` ディレクトリに配置し、実際のワークフローは `.github/workflows/` からコピーして使用してください。
+
 ```yaml
 # .github/workflows/ci.yml
 name: CI Pipeline
