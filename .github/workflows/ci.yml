@@ -48,3 +48,12 @@ jobs:
       # 6. 単体テストを実行する
       - name: Run tests
         run: npm test
+
+      # 7. カバレッジレポートを生成する
+      - name: Generate coverage report
+        run: npm run test:coverage
+
+      # 8. カバレッジレポートをPRにコメントする
+      - name: Coverage Report
+        if: github.event_name == 'pull_request'
+        uses: davelosert/vitest-coverage-report-action@v2
