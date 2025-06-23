@@ -1,14 +1,14 @@
 import express from 'express';
 import path from 'path';
 
-const app = express();
+export const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.static('public'));
 
-const omikujiResults = ['大凶', '凶', '小吉', '吉', '大吉'];
+export const omikujiResults = ['大凶', '凶', '小吉', '吉', '大吉'];
 
-function getRandomOmikuji(): string {
+export function getRandomOmikuji(): string {
   const randomIndex = Math.floor(Math.random() * omikujiResults.length);
   return omikujiResults[randomIndex];
 }
@@ -79,6 +79,8 @@ app.get('/', (req, res) => {
   res.send(html);
 });
 
-app.listen(port, () => {
-  console.log(`おみくじアプリが http://localhost:${port} で起動しました`);
-});
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`おみくじアプリが http://localhost:${port} で起動しました`);
+  });
+}
