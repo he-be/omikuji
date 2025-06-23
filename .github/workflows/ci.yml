@@ -15,7 +15,8 @@ jobs:
   # 'build-and-test' という名前のジョブ
   build-and-test:
     # ジョブを実行する仮想環境の種類（最新のUbuntu）
-    runs-on: ubuntu-latest
+    #runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     # ジョブ内のステップ（実行されるコマンド）
     steps:
