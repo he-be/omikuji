@@ -1,0 +1,50 @@
+# ワークフローの名前
+name: CI Pipeline
+
+# ワークフローが実行されるタイミングを定義
+on:
+  # mainブランチにプッシュされた時
+  push:
+    branches: [ "main" ]
+  # mainブランチに向けたプルリクエストが作成・更新された時
+  pull_request:
+    branches: [ "main" ]
+
+# 実行される一連のタスク（ジョブ）を定義
+jobs:
+  # 'build-and-test' という名前のジョブ
+  build-and-test:
+    # ジョブを実行する仮想環境の種類（最新のUbuntu）
+    runs-on: ubuntu-latest
+
+    # ジョブ内のステップ（実行されるコマンド）
+    steps:
+      # 1. リポジトリのコードを仮想環境にチェックアウトする
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2. Node.js環境をセットアップする
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          # 使用するNode.jsのバージョンを指定
+          node-version: '20.x'
+          # npmの依存関係をキャッシュして、次回以降の実行を高速化する
+          cache: 'npm'
+
+      # 3. 依存関係をインストールする
+      # 'npm install'ではなく'npm ci'を使うことで、package-lock.jsonに基づいた高速でクリーンなインストールを行う
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. コードの静的解析（リンター）を実行する
+      - name: Run lint
+        run: npm run lint
+
+      # 5. TypeScriptの型チェックを実行する
+      - name: Run typecheck
+        run: npm run typecheck
+
+      # 6. 単体テストを実行する
+      - name: Run tests
+        run: npm test
