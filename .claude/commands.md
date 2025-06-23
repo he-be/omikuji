@@ -1,6 +1,8 @@
 # Custom Commands for Claude Code
 
-## /check-ci
+## Core Workflow Commands
+
+### /check-ci
 
 GitHub Actions の CI を確認し、失敗時は自動修正します。
 
@@ -13,7 +15,7 @@ GitHub Actions の CI を確認し、失敗時は自動修正します。
 5. ローカル環境で失敗原因を再現し、ソースコードの問題を特定します。
 6. 修正をプランし、更新後 Push します。
 
-## /sync-main
+### /sync-main
 
 Issue 対応間に実行するコマンドです。作業ブランチをマージ後、main ブランチに戻って最新状態に更新します。
 
@@ -24,19 +26,62 @@ Issue 対応間に実行するコマンドです。作業ブランチをマー�
 3. `git pull` を実行し main ブランチを更新します。
 4. 更新内容や現状を簡単に報告します。
 
-## /setup-project
+### /deploy-test
 
-新しい TypeScript プロジェクトを Claude Code ベストプラクティスに従ってセットアップします。
+デプロイメントをテストします。
 
-以下を含むプロジェクトを作成してください：
+以下のステップに従ってください：
 
-1. TypeScript 設定（strict mode 有効）
-2. Vitest テストフレームワーク設定
-3. ESLint + Prettier 設定
-4. GitHub Actions CI/CD パイプライン
-5. カバレッジレポート自動生成
-6. Claude.md ファイルの配置
-7. 基本的なプロジェクト構造の作成
+1. 現在のブランチとコミット状況を確認
+2. ビルドプロセスをローカルで実行
+3. テストスイートを実行してカバレッジを確認
+4. main ブランチにプッシュしてデプロイをトリガー
+5. CI/CD パイプラインの実行を監視
+6. デプロイ完了後、実際のエンドポイントをテスト
+
+## Project Setup Commands
+
+### /setup-fullstack
+
+フルスタック TypeScript プロジェクトを個人開発最適化設定でセットアップします。
+
+以下を含む完全なプロジェクトを作成してください：
+
+1. **基本設定**:
+   - TypeScript strict mode + 最新設定
+   - Vitest テストフレームワーク（カバレッジ 80%+ 設定）
+   - ESLint + Prettier 統合
+
+2. **CI/CD パイプライン**:
+   - GitHub Actions self-hosted runner 対応
+   - 段階的品質チェック（lint → typecheck → test → coverage）
+   - Cloudflare Workers 自動デプロイ
+
+3. **開発効率化**:
+   - Claude.md 配置（個人開発ルール込み）
+   - .claude/ フォルダ（カスタムコマンド）
+   - package.json スクリプト最適化
+
+4. **プロジェクト構造**:
+   ```
+   src/
+   ├── index.ts          # Express版（開発用）
+   ├── worker.ts         # Cloudflare Workers版（本番用）
+   └── __tests__/        # テストファイル
+   ```
+
+### /setup-cloudflare
+
+既存プロジェクトに Cloudflare Workers デプロイを追加します。
+
+以下を実行してください：
+
+1. Wrangler CLI インストールと設定
+2. Workers 対応版コード作成（Web標準API）
+3. wrangler.toml 設定ファイル作成
+4. GitHub Actions デプロイステージ追加
+5. 環境変数とシークレット設定ガイド表示
+6. デプロイテスト実行
 
 ## /add-feature [feature-name]
 

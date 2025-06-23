@@ -1,0 +1,202 @@
+# 個人開発最適化 GitHub Actions CI/CD テンプレート
+# Self-hosted runner + Cloudflare Workers 対応
+
+name: Optimized CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+# 同時実行制御（高速化）
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '20.x'
+
+jobs:
+  # ステージ1: 高速品質チェック
+  quality-check:
+    name: Quality Check
+    runs-on: self-hosted
+    timeout-minutes: 5
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run linter
+        run: npm run lint
+      
+      - name: Type check
+        run: npm run typecheck
+
+  # ステージ2: テストとカバレッジ
+  test:
+    name: Test and Coverage
+    runs-on: self-hosted
+    needs: quality-check
+    timeout-minutes: 10
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run tests
+        run: npm test
+      
+      - name: Generate coverage report
+        run: npm run test:coverage
+      
+      # PR カバレッジレポート
+      - name: Coverage Report Comment
+        if: github.event_name == 'pull_request'
+        uses: davelosert/vitest-coverage-report-action@v2
+        with:
+          working-directory: ./
+      
+      # カバレッジアーティファクト保存
+      - name: Upload coverage reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-reports
+          path: coverage/
+          retention-days: 7
+
+  # ステージ3: ビルド検証
+  build:
+    name: Build Verification
+    runs-on: self-hosted
+    needs: test
+    timeout-minutes: 5
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build Express app
+        run: npm run build
+      
+      - name: Build Cloudflare Workers
+        run: npm run build:worker
+      
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifacts
+          path: dist/
+          retention-days: 7
+
+  # ステージ4: セキュリティチェック（並列実行）
+  security:
+    name: Security Scan
+    runs-on: self-hosted
+    needs: quality-check
+    timeout-minutes: 5
+    continue-on-error: true
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Run npm audit
+        run: npm audit --audit-level=moderate
+        continue-on-error: true
+
+  # ステージ5: 本番デプロイ（main ブランチのみ）
+  deploy:
+    name: Deploy to Production
+    runs-on: self-hosted
+    needs: [test, build, security]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    timeout-minutes: 10
+    
+    environment:
+      name: production
+      url: https://${{ vars.PROJECT_NAME }}.masahiro-hibi.workers.dev
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Build for production
+        run: npm run build:worker
+      
+      - name: Deploy to Cloudflare Workers
+        run: npm run deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      
+      # デプロイ検証
+      - name: Verify deployment
+        run: |
+          sleep 10
+          curl -f https://${{ vars.PROJECT_NAME }}.masahiro-hibi.workers.dev/health || exit 1
+        continue-on-error: false
+
+  # 成功通知
+  notify-success:
+    name: Notify Success
+    runs-on: self-hosted
+    needs: [test, build]
+    if: success()
+    
+    steps:
+      - name: Success notification
+        run: |
+          echo "🎉 CI/CD Pipeline completed successfully!"
+          echo "📊 Test coverage: Check PR comments"
+          echo "🚀 Ready for deployment"
+
+# ジョブ実行フロー:
+# quality-check → test → deploy (main only)
+#               → build ↗
+#               → security (parallel)
+#
+# 特徴:
+# - Self-hosted runner で高速実行
+# - 段階的品質チェック
+# - 並列処理でパフォーマンス最適化
+# - 自動カバレッジレポート
+# - 本番デプロイ自動化
