@@ -1,3 +1,5 @@
+import { describe, test, expect } from 'vitest';
+
 describe('Omikuji', () => {
   const omikujiResults = ['大凶', '凶', '小吉', '吉', '大吉'];
 
