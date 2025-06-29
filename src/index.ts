@@ -74,12 +74,12 @@ function generateHTML(result: string): string {
 export default {
   async fetch(request: Request): Promise<Response> {
     const url = new URL(request.url);
-    
+
     // ルートパスの処理
     if (url.pathname === '/') {
       const result = getRandomOmikuji();
       const html = generateHTML(result);
-      
+
       return new Response(html, {
         headers: {
           'Content-Type': 'text/html; charset=utf-8',
@@ -87,11 +87,11 @@ export default {
         },
       });
     }
-    
+
     // APIエンドポイント（JSON）
     if (url.pathname === '/api/omikuji') {
       const result = getRandomOmikuji();
-      
+
       return new Response(JSON.stringify({ result }), {
         headers: {
           'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ export default {
         },
       });
     }
-    
+
     // 404 Not Found
     return new Response('Not Found', { status: 404 });
   },
