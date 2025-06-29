@@ -1,10 +1,4 @@
-import express from 'express';
-import path from 'path';
-
-export const app = express();
-const port = process.env.PORT || 3000;
-
-app.use(express.static('public'));
+// Cloudflare Workers対応版のおみくじアプリ
 
 export const omikujiResults = ['大凶', '凶', '小吉', '吉', '大吉'];
 
@@ -13,9 +7,8 @@ export function getRandomOmikuji(): string {
   return omikujiResults[randomIndex];
 }
 
-app.get('/', (req, res) => {
-  const result = getRandomOmikuji();
-  const html = `
+function generateHTML(result: string): string {
+  return `
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -76,11 +69,38 @@ app.get('/', (req, res) => {
 </body>
 </html>
   `;
-  res.send(html);
-});
-
-if (require.main === module) {
-  app.listen(port, () => {
-    console.log(`おみくじアプリが http://localhost:${port} で起動しました`);
-  });
 }
+
+export default {
+  async fetch(request: Request): Promise<Response> {
+    const url = new URL(request.url);
+    
+    // ルートパスの処理
+    if (url.pathname === '/') {
+      const result = getRandomOmikuji();
+      const html = generateHTML(result);
+      
+      return new Response(html, {
+        headers: {
+          'Content-Type': 'text/html; charset=utf-8',
+          'Cache-Control': 'no-cache',
+        },
+      });
+    }
+    
+    // APIエンドポイント（JSON）
+    if (url.pathname === '/api/omikuji') {
+      const result = getRandomOmikuji();
+      
+      return new Response(JSON.stringify({ result }), {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+      });
+    }
+    
+    // 404 Not Found
+    return new Response('Not Found', { status: 404 });
+  },
+};

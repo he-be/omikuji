@@ -1,43 +1,35 @@
 {
   "name": "omikuji",
   "version": "1.0.0",
-  "description": "A simple omikuji (fortune telling) page",
-  "main": "dist/index.js",
+  "description": "A simple omikuji (fortune telling) application on Cloudflare Workers",
+  "main": "src/index.ts",
   "scripts": {
-    "build": "tsc",
-    "build:worker": "tsc src/worker.ts --outDir dist --target ES2022 --moduleResolution bundler --allowSyntheticDefaultImports",
-    "start": "node dist/index.js",
-    "dev": "ts-node src/index.ts",
-    "dev:worker": "wrangler dev src/worker.ts",
+    "dev": "wrangler dev src/index.ts",
+    "build": "vite build",
     "deploy": "wrangler deploy",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
+    "test:unit": "vitest run",
     "lint": "echo 'Linting passed'",
     "typecheck": "tsc --noEmit"
   },
   "keywords": [
     "omikuji",
     "fortune",
-    "node",
+    "cloudflare-workers",
     "typescript"
   ],
   "author": "",
   "license": "MIT",
-  "dependencies": {
-    "express": "^4.18.2"
-  },
   "devDependencies": {
-    "@types/express": "^4.17.17",
-    "@types/jest": "^29.5.4",
+    "@cloudflare/workers-types": "^4.20250628.0",
     "@types/node": "^20.5.0",
-    "@types/supertest": "^6.0.3",
     "@vitest/coverage-v8": "^3.2.4",
-    "jest": "^29.6.2",
-    "supertest": "^7.1.1",
-    "ts-jest": "^29.1.1",
-    "ts-node": "^10.9.1",
+    "miniflare": "^4.20250617.4",
     "typescript": "^5.1.6",
+    "vite": "^7.0.0",
+    "vitest": "^3.2.4",
     "wrangler": "^4.20.5"
   }
 }
