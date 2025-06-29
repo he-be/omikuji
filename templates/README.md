@@ -1,223 +1,264 @@
-# Personal Development Optimization Templates
+# AI駆動開発最適化テンプレート
 
-このディレクトリには、個人開発効率化のためのテンプレートとツールが含まれています。
+このディレクトリには、AI駆動開発に最適化されたプロジェクトテンプレートとツールが含まれています。  
+AUTOMATION_GUIDELINE.md と LESSONS_LEARNED.md の知見を基に、自己修正型AI環境を構築します。
+
+## 🤖 AI駆動開発の特徴
+
+- **4層検証システム**: 静的解析 → 単体テスト → E2E → 品質ゲート
+- **自己修正型環境**: AIエージェントが自律的に品質チェック
+- **統一アーキテクチャ**: Cloudflare Workers単一実装
+- **高速フィードバック**: Vite + Miniflare + Vitest統合
 
 ## 🚀 クイックスタート
 
 ### 新規プロジェクト作成（推奨）
 
 ```bash
-# 最適化済みフルスタックプロジェクト
-./project-setup-optimized.sh my-new-project
+# AI駆動開発最適化済みプロジェクト
+./ai-driven-cloudflare-setup.sh my-ai-project
+cd my-ai-project
+npm install
+npm run dev
 ```
-
-**特徴:**
-- TypeScript + Vitest + ESLint 最適設定
-- GitHub Actions self-hosted runner 対応
-- Cloudflare Workers 自動デプロイ
-- Claude Code カスタムコマンド統合
-- 80%+ テストカバレッジ強制
 
 ## 📁 ファイル構成
 
 ### 🔧 セットアップスクリプト
 
-#### `project-setup-optimized.sh`
-**個人開発最適化版プロジェクトセットアップ**
+#### `ai-driven-cloudflare-setup.sh` ⭐ **推奨**
+
+**AI駆動開発最適化 Cloudflare Workers プロジェクトセットアップ**
 
 ```bash
 # 使用例
-./project-setup-optimized.sh my-awesome-project
-cd my-awesome-project
-npm install
+./ai-driven-cloudflare-setup.sh my-ai-project
 ```
 
 **自動設定内容:**
-- ✅ TypeScript strict mode + 厳格ルール
-- ✅ Vitest テストフレームワーク（カバレッジ強制）
-- ✅ ESLint + Prettier 統合
-- ✅ GitHub Actions CI/CD（self-hosted対応）
-- ✅ Cloudflare Workers デプロイ設定
-- ✅ Claude.md + .claude/ カスタムコマンド
-- ✅ Express + Workers 両対応
 
-#### `quick-setup.sh`
-**基本版プロジェクトセットアップ**
+- ✅ 4層検証システム（TypeScript + ESLint + Vitest + Playwright）
+- ✅ 自己修正型AI環境（Husky + lint-staged）
+- ✅ 統一Cloudflare Workersアーキテクチャ
+- ✅ 高速フィードバックループ（Vite + Miniflare）
+- ✅ CI/CD with E2E Testing
+- ✅ AI Agent最適化（CLAUDE.md）
 
-```bash
-# 使用例
-./quick-setup.sh simple-project
-```
+**技術スタック:**
 
-**基本設定のみ:**
-- TypeScript + Vitest
-- 基本的な CI/CD
-- シンプルな構成
+- Cloudflare Workers + TypeScript + Vite
+- Vitest (単体テスト) + Playwright (E2E)
+- ESLint (静的解析) + Prettier (フォーマット)
+- Husky + lint-staged (品質ゲート)
 
 ### ⚙️ GitHub Actions テンプレート
 
-#### `github-actions-optimized.yml`
-**個人開発最適化 CI/CD パイプライン**
+#### `github-workflows-ci.yml` ⭐ **AI駆動開発対応**
+
+**4層検証システム実装 CI/CD パイプライン**
 
 **特徴:**
-- Self-hosted runner 最適化
-- 段階的品質チェック（lint → test → deploy）
-- 並列処理でパフォーマンス向上
-- Cloudflare Workers 自動デプロイ
-- カバレッジ PR コメント
+
+- Layer 1: 静的解析（TypeScript + ESLint + Prettier）
+- Layer 2: 単体テスト（Vitest）
+- Layer 3: E2Eテスト（Playwright）
+- Layer 4: 品質ゲート（Pre-commit hooks）
+- Cloudflare Workers 統一アーキテクチャ
+- CI環境最適化（ubuntu-latest + chromiumのみ）
 
 **使用方法:**
+
 ```bash
-cp templates/github-actions-optimized.yml .github/workflows/ci.yml
-# PROJECT_NAME変数を適切に設定
+cp templates/github-workflows-ci.yml .github/workflows/ci.yml
 ```
 
-**実行時間実績:**
-- Quality Check: 1-2分
-- Test & Coverage: 2-3分
-- Deploy: 1分
-- **合計: 3-5分**
+#### `github-actions-optimized.yml`
 
-## 🎯 効率化の特徴
+**従来版CI/CDテンプレート（参考用）**
 
-### 🔄 完全自動化フロー
+## 🏗 AI駆動開発のアーキテクチャ
+
+### 4層検証システム
+
 ```
-コード変更 → Push → CI/CD → テスト → デプロイ → 世界配信
-```
-
-### 📊 品質保証
-- **テストカバレッジ**: 80%+ 強制
-- **型安全性**: TypeScript strict mode
-- **コード品質**: ESLint + Prettier
-- **自動修正**: CI 失敗時も Claude Code で即座に対応
-
-### 💰 コスト効率
-- **GitHub Actions**: $0（self-hosted）
-- **Cloudflare Workers**: $0-5/月（無料枠大）
-- **開発効率**: 3-5倍向上
-
-### ⚡ パフォーマンス
-- **CI実行時間**: 3-5分（GitHub-hosted比 50%短縮）
-- **デプロイ時間**: 1分未満
-- **グローバル配信**: 即座（Cloudflare エッジ）
-
-## 🛠 カスタマイズ方法
-
-### プロジェクト特化
-
-1. **フレームワーク追加**
-   ```bash
-   # React追加例
-   cd my-new-project
-   npm install react react-dom @types/react @types/react-dom
-   # package.json, tsconfig.json を更新
-   ```
-
-2. **データベース統合**
-   ```bash
-   # Cloudflare D1例
-   npm install @cloudflare/workers-types
-   # wrangler.toml に D1 設定追加
-   ```
-
-3. **認証システム**
-   ```bash
-   # JWT認証例
-   npm install jsonwebtoken @types/jsonwebtoken
-   ```
-
-### CI/CD カスタマイズ
-
-```yaml
-# .github/workflows/ci.yml に追加
-- name: Run E2E tests
-  run: npm run test:e2e
-
-- name: Security scan
-  run: npm audit --audit-level moderate
+第1層: 静的解析 (TypeScript + ESLint + Prettier)
+    ↓ 即座のフィードバック（IDE内でリアルタイム）
+第2層: 単体テスト (Vitest)
+    ↓ 高速なロジック検証（200ms以下）
+第3層: E2Eテスト (Playwright)
+    ↓ ユーザー体験の保証
+第4層: 品質ゲート (Husky + lint-staged)
+    ↓ コミット時の自動品質保証
 ```
 
-## 📈 実証済み効率化
+### AIエージェントの検証シーケンス
 
-### Before（従来の手動セットアップ）
-- 初期設定: 30分-1時間
-- CI/CD設定: 1-2時間  
-- デプロイ設定: 30分-1時間
-- **合計: 2-4時間**
+```bash
+# 必須の検証シーケンス（AIは必ずこの順序で実行）
+npm run typecheck    # 型チェック
+npm run lint         # コード品質
+npm run test:unit    # 単体テスト
+npm run test:e2e     # E2E（必要に応じて）
+```
 
-### After（最適化テンプレート）
-- セットアップ: 1分
-- 設定完了: 5分
-- デプロイ準備: 2分
-- **合計: 10分未満**
+## 🎯 AUTOMATION_GUIDELINE.md の実装
 
-### 開発効率向上
-- **機能追加**: 半日 → 1-2時間
-- **バグ修正**: 数時間 → 30分-1時間
-- **デプロイ**: 手動30分 → 自動3分
+このテンプレートは、AUTOMATION_GUIDELINE.md で定義された「自律型コーダーハンドブック」の原則を実装しています：
 
-## 🔧 使用方法詳細
+### 感覚システムの構築
+
+- **認識層**: TypeScript + ESLint（構造と品質の推論）
+- **行動層**: Vitest + Playwright（振る舞いと体験の検証）
+- **門番層**: Husky + lint-staged（品質ゲート）
+
+### AIへの効果的な指示方法
+
+- CLAUDE.md による明確なコンテキスト提供
+- 検証シーケンスの標準化
+- エラータイプの明確な分離
+
+## 📈 LESSONS_LEARNED.md からの知見
+
+このテンプレートには、実際の開発で得られた以下の知見が反映されています：
+
+### アーキテクチャの統一
+
+- Express版を削除し、Cloudflare Workers単一実装に統一
+- AIエージェントの混乱を防ぐ一貫した構造
+
+### CI/CD環境の最適化
+
+- ubuntu-latest ランナーの使用
+- Playwright の軽量化（chromiumのみ）
+- 段階的品質チェック
+
+### データ整合性の維持
+
+- テストデータと実装の厳密な一致
+- UIテストと実際のHTML構造の整合性
+
+### ツールの統合効果
+
+- Vite による開発環境の統一
+- 設定ファイルの集約
+
+## 🛠 使用方法詳細
 
 ### 1. 新規プロジェクト作成
 
 ```bash
-# このリポジトリクローン
+# このリポジトリをクローン
 git clone https://github.com/he-be/omikuji.git
 cd omikuji/templates
 
-# プロジェクト作成
-./project-setup-optimized.sh my-new-project
-cd my-new-project
+# AI駆動プロジェクト作成
+./ai-driven-cloudflare-setup.sh my-ai-project
+cd my-ai-project
 
 # 依存関係インストール
 npm install
 
 # 初期コミット
-git add . && git commit -m "Initial setup"
+git add . && git commit -m "Initial AI-driven setup"
 ```
 
 ### 2. GitHub 連携
 
 ```bash
 # リポジトリ作成・プッシュ
-gh repo create my-new-project --public --source=. --remote=origin --push
+gh repo create my-ai-project --public --source=. --remote=origin --push
 
 # Cloudflare Secrets 設定
 gh secret set CLOUDFLARE_API_TOKEN
 gh secret set CLOUDFLARE_ACCOUNT_ID
 ```
 
-### 3. 開発開始
+### 3. AI駆動開発開始
 
 ```bash
 # 開発サーバー起動
-npm run dev          # Express版
-npm run dev:worker   # Workers版
+npm run dev          # Cloudflare Workers + Miniflare
 
-# テスト実行
-npm run test:coverage
+# AI検証シーケンス実行
+npm run typecheck    # 第1層: 静的解析
+npm run lint         # 第1層: コード品質
+npm run test:unit    # 第2層: 単体テスト
+npm run test:e2e     # 第3層: E2E（必要に応じて）
 
 # デプロイ（自動）
 git push origin main
 ```
 
-## 🎯 次世代個人開発
+## 🤖 AIエージェント向けガイドライン
+
+### 必須の検証シーケンス
+
+AIエージェントは必ず以下の順序で検証を実行してください：
+
+1. `npm run typecheck` - 型エラーの検出
+2. `npm run lint` - コード品質の確認
+3. `npm run test:unit` - ロジックの検証
+4. `npm run test:e2e` - 統合の確認（必要に応じて）
+
+### エラー対応指針
+
+- **静的解析エラー** → 構文・型の問題
+- **単体テストエラー** → ロジックの問題
+- **E2Eテストエラー** → 統合・UIの問題
+
+### データ整合性の維持
+
+- テストデータは実装と厳密に一致させる
+- UIテストは実際のHTML構造を反映
+- 共通定数は単一箇所で管理
+
+## 📊 効率化実績
+
+### Before（従来の手動セットアップ）
+
+- 初期設定: 30分-1時間
+- CI/CD設定: 1-2時間
+- テスト環境構築: 1時間
+- **合計: 2.5-4時間**
+
+### After（AI駆動テンプレート）
+
+- セットアップ: 1分
+- 設定完了: 5分
+- 検証システム: 自動
+- **合計: 10分未満**
+
+### AI駆動開発の効果
+
+- **機能追加**: 半日 → 1-2時間
+- **バグ修正**: 数時間 → 10-30分
+- **デプロイ**: 手動30分 → 自動3分
+- **品質保証**: 手動チェック → 自動検証
+
+## 🎯 新しい開発体験
 
 このテンプレートにより以下が実現されます：
 
-### 🚀 スピード
+### 🚀 AI First Development
+
 - 1分でプロジェクト開始
 - 自動品質チェック
-- 即座のグローバル配信
+- 自己修正型環境
 
-### 🛡 品質
+### 🛡 品質の民主化
+
 - 妥協なき品質基準
-- 自動テスト・カバレッジ
+- 全自動テスト・カバレッジ
 - CI/CD完全統合
 
-### 💡 効率
-- Claude Code 最適化
-- 繰り返し作業の自動化
-- 運用負荷ほぼゼロ
+### 💡 効率的な学習サイクル
 
-**Happy Efficient Coding! 🎉**
+- CLAUDE.md による明確なコンテキスト
+- 即座のフィードバック
+- 継続的な改善
+
+**🤖 Ready for AI-Driven Development! 🚀**
+
+---
+
+_このテンプレートは AUTOMATION_GUIDELINE.md の「自律型コーダーハンドブック」と LESSONS_LEARNED.md の実戦知見に基づいて設計されています。_
